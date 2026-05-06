@@ -1,0 +1,38 @@
+starting worker pid=33652 on localhost:11339 at 22:20:08.772
+
+Attaching package: 'Ryacas'
+
+The following object is masked from 'package:stats':
+
+    integrate
+
+The following objects are masked from 'package:base':
+
+    %*%, det, diag, diag<-, lower.tri, upper.tri
+
+── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.1.4     ✔ readr     2.1.5
+✔ forcats   1.0.0     ✔ stringr   1.5.1
+✔ ggplot2   3.5.1     ✔ tibble    3.2.1
+✔ lubridate 1.9.3     ✔ tidyr     1.3.1
+✔ purrr     1.0.2     
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter()   masks stats::filter()
+✖ dplyr::lag()      masks stats::lag()
+✖ purrr::simplify() masks Ryacas::simplify()
+ℹ Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors
+sum of Acetate and Butyrate fluxes v105+v107; stage UB; binary index 1
+h =  146.7
+sum of fluxes v105+v107; stage UB; binary index 1; optim.step 1; tracer 13CGlc
+sum of fluxes v105+v107; stage UB; binary index 1; optim.step 1; tracer 13CLac
+sum of fluxes v105+v107; stage UB; binary index 1; optim.step 1; tracer 13CGlycerol
+sum of fluxes v105+v107; stage UB; binary index 1; optim.step 1; tracer 13CAla
+sum of fluxes v105+v107; stage UB; binary index 1; optim.step 1; tracer 13CGln
+sum of fluxes v105+v107; stage UB; binary index 1; optim.step 1; tracer 13CHB
+sum of fluxes v105+v107; stage UB; binary index 1; optim.step 1; tracer 13ChpAAb
+sum of fluxes v105+v107; stage UB; binary index 1; optim.step 1; tracer 13ChpAAc
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+In addition: Warning message:
+package 'Ryacas' was built under R version 4.4.3 
+Execution halted
