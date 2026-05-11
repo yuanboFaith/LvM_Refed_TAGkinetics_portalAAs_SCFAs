@@ -17,7 +17,7 @@ rstudioapi::getActiveDocumentContext()$path %>% dirname() %>% setwd(); getwd()
 
 # cleaned labeling - infusion data (from the 'data' folder)
 # !!! important to use the new data set (combining the AA tracing data in the refed dataset)
-load(file = "../data/cleaned_labeling_data_hpAA-SCFA.RData")
+load(file = "../data/cleaned_labeling_data_TAGkinetics_hpAA-SCFA.RData")
 
 
 state_fasted.or.refed <- "refed"
@@ -25,7 +25,7 @@ state_fasted.or.refed <- "refed"
 
 if (state_fasted.or.refed == "refed") {
   load("3_list.stoich.EMU_allTracers_refed.RData") # refed-specific EMU decomposed result 
-  d.13C.labeling <- d.13C.refed.hpAA.SCFA  
+  d.13C.labeling <- d.13C.refed_TAGkinetics.hpAA.SCFA
   totalCO2       <- 1800 * 1.2
 }
 
@@ -584,6 +584,19 @@ func.calculate_confidence_interval <- function(f){
         if (is_empty(ri)) stop("Did not find the index. Check spelling of reaction names")
         return(ri)
       }
+      
+      
+      # Other fatty acids srcAcCoA should be about 1.2 times higher than the total linoleate oxidation flux (extrapolated from the fasting state)
+      i.TAGLino  <- func.findIndex("TAGLino.Lv->AcCoA.Lv")
+      i.Lino     <- func.findIndex("Lino.Blood->AcCoA.Lv")
+      i.srcAcCoA <- func.findIndex("srcAcCoA->AcCoA.Lv")
+      
+      Amat <- rbind( Amat,    Amat0[i.srcAcCoA, ] - 1.2 * (Amat0[i.Lino, ] +  Amat0[i.TAGLino, ]  ) )
+      bo   <- c(bo, 0)
+      
+      Amat <- rbind( Amat, -c(Amat0[i.srcAcCoA, ] - 1.2 * (Amat0[i.Lino, ] +  Amat0[i.TAGLino, ]) ))
+      bo   <- c(bo, -1)
+      
       
       
       # Fluxes cannot be infinitely big (e.g., ≤ 10^8)

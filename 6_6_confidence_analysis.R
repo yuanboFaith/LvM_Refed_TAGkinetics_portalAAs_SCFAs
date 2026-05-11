@@ -183,8 +183,8 @@ d.CI.selected %>%
   scale_y_continuous(expand = c(0, 0),
                      labels = function(x) x * 1000,
                      breaks = seq(optimal_cost, cost.threshold.95, length.out = 5) %>% round(5),
-                     name = expression(cost~(x~10^-3))) +
-  coord_cartesian(ylim = c(optimal_cost, cost.threshold.95 + diff(c(optimal_cost, cost.threshold.95)) * 0.4))
+                     name = expression(cost~(x~10^-3)))  +
+ coord_cartesian(ylim = c(optimal_cost, cost.threshold.95 + diff(c(optimal_cost, cost.threshold.95)) * 0.4))
 
 
 ggsave(filename = "./plots/CI.pdf", height = 13, width = 25) 

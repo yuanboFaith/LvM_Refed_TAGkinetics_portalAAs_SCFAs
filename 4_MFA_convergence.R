@@ -30,17 +30,16 @@ state_fasted.or.refed <- "refed"
 
 if (state_fasted.or.refed == "refed") {
   load("3_list.stoich.EMU_allTracers_refed.RData") # refed-specific EMU decomposed result 
-  d.13C.labeling <- d.13C.refed.hpAA.SCFA  
+  d.13C.labeling <- d.13C.refed_TAGkinetics.hpAA.SCFA 
   totalCO2       <- 1800 * 1.2
 }
 
 
 # cleaned labeling - infusion data (from the 'data' folder)
 # !!! important to use the new data set (combining the AA tracing data in the refed dataset)
-load(file = "../data/cleaned_labeling_data_hpAA-SCFA.RData")
+load(file = "../data/cleaned_labeling_data_TAGkinetics_hpAA-SCFA.RData")
 
 
-d.13C.labeling %>% filter(Infusate == "13ChpSCFAa")
 
 
 # each state, fasted or refed, will generate its own .RData file containing the correction factors for coarse-grained modeling
@@ -686,6 +685,19 @@ for (optim.step in 1:n.opt.steps) {
   
   
   
+  
+  # Other fatty acids srcAcCoA should be about 1.2 times higher than the total linoleate oxidation flux (extrapolated from the fasting state)
+  i.TAGLino  <- func.findIndex("TAGLino.Lv->AcCoA.Lv")
+  i.Lino     <- func.findIndex("Lino.Blood->AcCoA.Lv")
+  i.srcAcCoA <- func.findIndex("srcAcCoA->AcCoA.Lv")
+  
+  Amat <- rbind( Amat,    Amat0[i.srcAcCoA, ] - 1.2 * (Amat0[i.Lino, ] +  Amat0[i.TAGLino, ]  ) )
+  bo   <- c(bo, 0)
+  
+  Amat <- rbind( Amat, -c(Amat0[i.srcAcCoA, ] - 1.2 * (Amat0[i.Lino, ] +  Amat0[i.TAGLino, ]) ))
+  bo   <- c(bo, -1)
+  
+  
   # Fluxes cannot be infinitely big (e.g., ≤ 10^8)
   # Amat <- rbind( Amat, -Amat0 )
   # bo   <- c(bo, rep(-10^28, nrow(Amat0)))
@@ -697,7 +709,7 @@ for (optim.step in 1:n.opt.steps) {
   # i.CS.Lv     <- func.findIndex("OAA.Lv+AcCoA.Lv->Cit.Lv")
   # Amat <- rbind( Amat, 100 * Amat0[i.CS.Lv, ] - Amat0[i.PEPCK.Lv, ] )
   # bo   <- c(bo, 0)
-  # 
+   
   # 
   # 
   # 
@@ -840,7 +852,6 @@ qr(dX.target_allTracers)$rank
 
 
 
-
 # Compare the simulated vs observed labeling
 d.obs.simu <-  tibble(obs = IDV.obs, 
                       sim = IDV.simulated_allTracers,
@@ -854,7 +865,8 @@ d.obs.simu <-  tibble(obs = IDV.obs,
 
 # place tracers in order
 ordered.tracers = paste0(
-  "13C", c("Glc", "Lac", "Ala", "Gln", "Glycerol", "HB", "Palm", "Ole", "Lino", 
+  "13C", c("Glc", "Lac", "Ala", "Gln", "Glycerol", "HB", "Lino",  # "Palm", "Ole",
+           paste0("LinoKin", c("A", "B", "C", "D", "E", "F", "G", "H", "I", "J")),
            paste0("hpAA", c("b", "c", "d", "e", "f", "j", "k", "l")),
            paste0("hpSCFA", c("a", "b", "c", "d"))))
 
@@ -885,7 +897,7 @@ plt.obs.sim <- d.obs.simu %>%
   
 plt.obs.sim
 
-# ggsave(filename = "./plots/sim vs obs.pdf", width = 5, height = 24)
+ggsave(filename = "./plots/sim vs obs.pdf", width = 25, height = 12)
 
 
 
@@ -930,7 +942,7 @@ p <- d.obs.simu %>%
   ggplot(aes(x = obs, y = sim, color = metabolite)) +
   scale_x_continuous(transform = "sqrt") +
   scale_y_continuous(transform = "sqrt") +
-  facet_wrap(~tracer, nrow = 2) +
+  facet_wrap(~tracer, nrow = 3) +
   geom_abline(slope = 1, intercept = 0, color = "black", linewidth = .3) +
   theme_bw(base_size = 13) +
   theme(axis.text.x = element_text(angle = 60, hjust = 1),
@@ -1313,20 +1325,21 @@ d.coord <- tribble(
   "Glycerol.Blood", 20, 5,
   
   "Lys.hp",     20, 0,
-  "Trp.hp",     20, -4,
-  "Tyr.hp",     20, -9,
+  "Trp.hp",     20, -3,
+  "Tyr.hp",     20, -8,
   "Thr.hp",     0, -10,
   
   
-  "Acetate.hp", 22, -15,
-  "Butyrate.hp",25, -12,
+  "Acetate.hp", 22, -18,
+  "Butyrate.hp",22, -15,
   # "AACoA.Lv",   25, -25,
   "Propionate.hp", -12, -30,
   
-  "Palm.Blood", 21, - 20,
-  "Ole.Blood",  18, - 23,
-  "Lino.Blood", 15, - 25,
-  "srcAcCoA",   13, -27,
+  # "Palm.Blood", 21, - 20,
+  # "Ole.Blood",  18, - 23,
+  "TAGLino.Lv", 18, -25, 
+  "Lino.Blood", 15, - 27,
+  "srcAcCoA",   13, -29,
   
   "Pyr.Lvc",     0,   0,
   "Lac.Blood",   10, 0,
@@ -1340,8 +1353,8 @@ d.coord <- tribble(
   "Mal.Lv",    -12, -20,
   "OAA.Lv",    -10, -10,
   "PEP.Lv",      0,  10,
-  "AcAct.Lv",    15, -30,
-  "HB.Blood",    25, -30,
+  "AcAct.Lv",    15, -34,
+  "HB.Blood",    25, -34,
   "sink",        20, -35
   # "protein",  -30,-35, 
 )
@@ -1433,3 +1446,4 @@ sink()
  
 # mark completion
 beepr::beep(2) 
+

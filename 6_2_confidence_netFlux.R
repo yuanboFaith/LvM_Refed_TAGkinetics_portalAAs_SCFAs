@@ -575,6 +575,20 @@ func.calculate_confidence_interval <- function(f){
       }
       
       
+      # Other fatty acids srcAcCoA should be about 1.2 times higher than the total linoleate oxidation flux (extrapolated from the fasting state)
+      i.TAGLino  <- func.findIndex("TAGLino.Lv->AcCoA.Lv")
+      i.Lino     <- func.findIndex("Lino.Blood->AcCoA.Lv")
+      i.srcAcCoA <- func.findIndex("srcAcCoA->AcCoA.Lv")
+      
+      Amat <- rbind( Amat,    Amat0[i.srcAcCoA, ] - 1.2 * (Amat0[i.Lino, ] +  Amat0[i.TAGLino, ]  ) )
+      bo   <- c(bo, 0)
+      
+      Amat <- rbind( Amat, -c(Amat0[i.srcAcCoA, ] - 1.2 * (Amat0[i.Lino, ] +  Amat0[i.TAGLino, ]) ))
+      bo   <- c(bo, -1)
+      
+      
+      
+      
       # Fluxes cannot be infinitely big (e.g., ≤ 10^8)
       # Amat <- rbind( Amat, -Amat0 )
       # bo   <- c(bo, rep(-10^28, nrow(Amat0)))

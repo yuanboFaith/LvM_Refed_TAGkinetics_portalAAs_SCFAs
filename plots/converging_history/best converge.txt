@@ -1,3 +1,8 @@
+[1] "repeat No. 0;  16 steps; 5.23 min; cost: 0.14527091"
+[1] "repeat No. 0;  15 steps; 4.93 min; cost: 0.14421296"
+[1] "repeat No. 0;  18 steps; 5.92 min; cost: 0.14487195"
+[1] "repeat No. 1;  18 steps; 10.6 min; cost: 0.14564925"
 
-[1] "Congrats! Selected the best repeat with the minimal cost: repeat_1"
-[1] "repeat No. 0;  23 steps; 5.07 min; cost: 0.14014803"
+[1] "Congrats! Selected the best repeat with the minimal cost: repeat_5"
+
+[1] "Congrats! Selected the best repeat with the minimal cost: repeat_2"

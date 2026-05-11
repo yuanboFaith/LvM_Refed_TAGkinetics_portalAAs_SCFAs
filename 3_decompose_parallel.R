@@ -24,7 +24,7 @@ if (Sys.info()[["sysname"]] == "Darwin") { # if Bo's Mac
   cl <- makeCluster(6,  outfile = "")
   
 } else { # labs windows computer
-  cl <- makeCluster(18,  outfile = "log_parallel decompose.txt")
+  cl <- makeCluster(6+8+10+4,  outfile = "log_parallel decompose.txt")
   
 }
 
@@ -82,17 +82,18 @@ if (state_fasted.or.refed == "fasted") {
 if (state_fasted.or.refed == "refed") {
   # fed state
   params <- list(
+    
+    # N = 5
     "13CGlc"      = list(myTracer = "13CGlc",      tracerInputRate = 80),
     "13CLac"      = list(myTracer = "13CLac",      tracerInputRate = 49),
     "13CGlycerol" = list(myTracer = "13CGlycerol", tracerInputRate = 10),
     "13CAla"      = list(myTracer = "13CAla",      tracerInputRate = 30),
     "13CGln"      = list(myTracer = "13CGln",      tracerInputRate = 10),
-    # "13CPalm"     = list(myTracer = "13CPalm",     tracerInputRate = 16),
-    # "13COle"      = list(myTracer = "13COle",      tracerInputRate = 36),
-    # "13CLino"     = list(myTracer = "13CLino",     tracerInputRate = 28.8),
+
     "13CHB"       = list(myTracer = "13CHB",       tracerInputRate = 6),
     
     
+    # N = 10
     # # an "artificial tracer" placeholder for TAG kinetics assay
     "13CLinoKinA"  = list(myTracer = "13CLinoKinA",    tracerInputRate = 0),
     "13CLinoKinB"  = list(myTracer = "13CLinoKinB",    tracerInputRate = 0),
@@ -106,6 +107,7 @@ if (state_fasted.or.refed == "refed") {
     "13CLinoKinJ"  = list(myTracer = "13CLinoKinJ",    tracerInputRate = 0),
     
     
+    # N=8
     # # an "artificial tracer" for dietary amino acids to fit into the computation structure 
     "13ChpAAb"    = list(myTracer = "13ChpAAb",    tracerInputRate = 0),
     "13ChpAAc"    = list(myTracer = "13ChpAAc",    tracerInputRate = 0),
@@ -117,6 +119,7 @@ if (state_fasted.or.refed == "refed") {
     "13ChpAAl"    = list(myTracer = "13ChpAAl",    tracerInputRate = 0),
     
     
+    # N=4
     # # an "artificial tracer" for dietary amino acids to fit into the computation structure
     "13ChpSCFAa"  = list(myTracer = "13ChpSCFAa",    tracerInputRate = 0),
     "13ChpSCFAb"  = list(myTracer = "13ChpSCFAb",    tracerInputRate = 0),
