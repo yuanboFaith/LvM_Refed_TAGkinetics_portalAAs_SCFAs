@@ -321,11 +321,11 @@ d.CI.bounds.reactions.lv <- d.CI.bounds.reactions %>%
 # plot confidence interval - version 2
 func.plot.CI <- function(L.limit = 0, R.limit = 500, shiftName = 40) {
   
-  # test L.limit = 0; R.limit = 500
+  # L.limit = 0; R.limit = 500
   
   dd <- d.CI.bounds.reactions.lv %>% 
     filter(R < R.limit) %>% 
-    filter(L > L.limit) 
+    filter(L >= L.limit) 
   
   message(nrow(dd), " reactions found")
   
@@ -374,8 +374,8 @@ func.plot.CI <- function(L.limit = 0, R.limit = 500, shiftName = 40) {
     scale_x_discrete(limits = rev, expand = expansion(add = .2)) %>% 
   return()
   
-  
 }
+
 
 p.small  <- func.plot.CI(L.limit = 0,    R.limit = 500, shiftName = 40)
 p.big   <- func.plot.CI(L.limit = 500.1, R.limit = 4000, shiftName = 200)
